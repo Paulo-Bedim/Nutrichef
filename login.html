@@ -1,40 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-PT">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/login.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login / Registo</title>
+  <link rel="stylesheet" href="css/login.css">
 </head>
 
 <body>
-    <div class="container">
-        <div class="form-box" id="login-form">
-            <form action="">
-                <h2>Login</h2>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Senha" required>
-                <button type="submit" name="login">Login</button>
-                <p>Não tem conta? <a href="#">Registre-se!</a></p>
-            </form>
-        </div>
-
-        <div class="form-box" id="register-form">
-            <form action="">
-                <h2>Registro</h2>
-                <input type="text" name="nome" placeholder="Nome" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="password" name="password" placeholder="Senha" required>
-                <select name="role" required>
-                    <option value="" disabled selected>Selecione seu papel</option>
-                    <option value="user">Usuário</option>
-                    <option value="admin">Admin</option>
-                </select>
-                <button type="submit" name="register">Registro</button>
-                <p>Já tem conta? <a href="#">Efetue login!</a></p>
-            </form>
-        </div>
+  <div class="container">
+    <!-- Formulário de Login -->
+    <div class="form-box" id="login-form">
+      <form id="loginForm">
+        <h2>Login</h2>
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Senha" required />
+        <button type="submit">Login</button>
+        <p>Não tem conta? <a href="#" onclick="toggleForms()">Registe-se!</a></p>
+      </form>
     </div>
-    
+
+    <!-- Formulário de Registo -->
+    <div class="form-box" id="register-form" style="display: none">
+      <form id="registerForm">
+        <h2>Registo</h2>
+        <input type="text" name="nome" placeholder="Nome" required />
+        <input type="email" name="email" placeholder="Email" required />
+        <input type="password" name="password" placeholder="Senha" required />
+        <button type="submit">Registar</button>
+        <p>Já tem conta? <a href="#" onclick="toggleForms()">Efetue login!</a></p>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Alternar entre login e registo
+    function toggleForms() {
+      const loginForm = document.getElementById("login-form");
+      const registerForm = document.getElementById("register-form");
+      loginForm.style.display = loginForm.style.display === "none" ? "block" : "none";
+      registerForm.style.display = registerForm.style.display === "none" ? "block" : "none";
+    }
+
+    // Submeter formulário de login
+    document.getElementById("loginForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const email = this.email.value;
+      const password = this.password.value;
+
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Login feito com sucesso!");
+        localStorage.setItem("token", data.token); // Guarda o token
+        // window.location.href = "/dashboard.html"; // redireciona se quiseres
+      } else {
+        alert(data.message || "Erro no login.");
+      }
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const nome = this.nome.value;
+      const email = this.email.value;
+      const password = this.password.value;
+      const role = 3;
+
+      const res = await fetch("http://localhost:3000/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name: nome, email, password, role })
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("Registo feito com sucesso!");
+        toggleForms();
+      } else {
+        alert(data.message || "Erro no registo.");
+      }
+    });
+  </script>
 </body>
 </html>
