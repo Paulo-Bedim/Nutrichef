@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Nutrichef</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="#" class="logo" aria-label="Dashboard Nutrichef">Nutrichef</a>
+            <button class="logout-button">Sair</button>
+        </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="dashboard">
+        <div class="container">
+            <h1>Dashboard Administrativa</h1>
+            <div class="dashboard-grid">
+                <!-- Estatísticas -->
+                <section class="stats-card">
+                    <h2>Estatísticas</h2>
+                    <p>Consultas Agendadas: <strong>45</strong></p>
+                    <p>Planos Ativos: <strong>30</strong></p>
+                    <p>Usuários Registrados: <strong>120</strong></p>
+                </section>
+
+                <!-- Consultas Agendadas -->
+                <section class="consultations-card">
+                    <h2>Consultas Agendadas</h2>
+                    <ul>
+                        <li>João Silva - 14/05/2025 10:00</li>
+                        <li>Maria Oliveira - 15/05/2025 14:30</li>
+                        <li>Pedro Santos - 16/05/2025 09:00</li>
+                    </ul>
+                </section>
+
+                <!-- Planos Alimentares -->
+                <section class="plans-card">
+                    <h2>Planos Alimentares</h2>
+                    <ul>
+                        <li>Plano Básico - Ativo (10 dias restantes)</li>
+                        <li>Plano Premium - Ativo (25 dias restantes)</li>
+                        <li>Plano Personalizado - Pendente</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    © 2025 Nutrichef. Todos os direitos reservados.
+                </div>
+                <div class="social-links">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Siga-nos no Instagram">
+                        <img src="../img/instagram-icon.png" alt="Ícone do Instagram" class="social-icon">
+                    </a>
+                    <div class="contact-info">
+                        <img src="../img/telefone-icon.png" alt="Ícone de telefone" class="social-icon">
+                        <span aria-label="Telefone de contato">+351 910 889 807</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Verificação de autenticação e role
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Acesso negado. Faça login primeiro.');
+                window.location.href = '../html/login.html';
+                return;
+            }
+
+            // Simulação de role (ajuste conforme sua API)
+            const userRole = 1; // 1 = admin, 3 = usuário comum (exemplo)
+            if (userRole !== 1) {
+                alert('Acesso negado. Apenas administradores podem acessar esta página.');
+                window.location.href = '../index.html';
+                return;
+            }
+
+            // Logout
+            document.querySelector('.logout-button').addEventListener('click', () => {
+                localStorage.removeItem('token');
+                window.location.href = '../html/login.html';
+            });
+        });
+    </script>
+</body>
+</html>

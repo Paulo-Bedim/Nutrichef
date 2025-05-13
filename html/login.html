@@ -90,7 +90,7 @@
       const data = await res.json();
 
       if (res.ok) {
-        alert("Registo feito com sucesso!");
+        window.localtion.href = "./dashboard.html";
         toggleForms();
       } else {
         alert(data.message || "Erro no registo.");
