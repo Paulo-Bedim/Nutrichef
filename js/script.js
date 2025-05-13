@@ -1,19 +1,5 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Menu hamburger
-    const hamburger = document.querySelector('.hamburger');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
-    
-    if(hamburger) {
-        hamburger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('active');
-        });
-    }
-
-    // Fechar menu ao clicar fora
-    document.addEventListener('click', (e) => {
-        if(dropdownMenu && !e.target.closest('.menu-container')) {
-            dropdownMenu.classList.remove('active');
-        }
-    });
+document.querySelector('.hamburger').addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.toggle('active');
+    const expanded = document.querySelector('.hamburger').getAttribute('aria-expanded') === 'true';
+    document.querySelector('.hamburger').setAttribute('aria-expanded', !expanded);
 });

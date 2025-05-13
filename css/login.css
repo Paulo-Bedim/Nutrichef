@@ -1,10 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+/* Importar a fonte Roboto, como nas outras páginas */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
 
+/* Estilos gerais */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", serif;
+    font-family: 'Roboto', sans-serif; /* Mesma fonte do site */
 }
 
 body {
@@ -12,70 +14,110 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
-    color: #333;
+    background: linear-gradient(120deg, #e8f5e9, #f5f7fa); /* Degrade verde claro, combinando com o site */
+    color: #1a3c34; /* Verde escuro para texto */
 }
 
 .container {
     margin: 0 15px;
+    position: relative; /* Para posicionar o botão Voltar */
+    padding-top: 50px; /* Espaço para o botão Voltar */
+}
+
+/* Botão Voltar */
+.back-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #27ae60; /* Verde principal */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.back-button:hover {
+    background: #219653; /* Verde mais escuro no hover */
+    transform: translateY(-2px); /* Efeito de elevação */
 }
 
 .form-box {
     width: 100%;
     max-width: 450px;
-    padding: 30px;
+    padding: 40px;
     background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra mais suave */
+    transition: transform 0.3s;
+}
+
+.form-box:hover {
+    transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
 }
 
 h2 {
-    font-size: 34px;
+    font-size: 2rem;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    color: #1a3c34;
+    font-weight: 700;
 }
 
 input {
     width: 100%;
     padding: 12px;
-    background: #eee;
-    border-radius: 6px;
-    border: none;
+    background: #f0f4f8; /* Fundo claro para inputs */
+    border-radius: 8px;
+    border: 1px solid #e0e0e0; /* Borda sutil */
     outline: none;
-    font-size: 16px;
-    color: #333;
+    font-size: 1rem;
+    color: #1a3c34;
     margin-bottom: 20px;
+    transition: border-color 0.3s;
+}
+
+input:focus {
+    border-color: #27ae60; /* Verde no foco */
 }
 
 button {
     width: 100%;
     padding: 12px;
-    background: #7494ec;
-    border-radius: 6px;
+    background: #27ae60; /* Verde principal */
+    border-radius: 8px;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 1rem;
     color: #fff;
     font-weight: 500;
     margin-bottom: 20px;
-    transition: 0.5s;
+    transition: background 0.3s, transform 0.3s;
 }
 
 button:hover {
-    background: #6884d3;
+    background: #219653; /* Verde mais escuro no hover */
+    transform: translateY(-2px); /* Efeito de elevação */
 }
 
 p {
-    font-size: 14.5px;
+    font-size: 0.9rem;
     text-align: center;
     margin-bottom: 10px;
 }
 
 p a {
-    color: #7494ec;
+    color: #27ae60; /* Verde para links */
     text-decoration: none;
+    font-weight: 500;
 }
 
 p a:hover {
     text-decoration: underline;
+    color: #219653;
 }
