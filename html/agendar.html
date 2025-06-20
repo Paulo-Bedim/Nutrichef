@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendar Consultas - Nutrição Integrativa</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <title>Agendar Consultas - Nutrichef</title>
+    <link href="../css/styles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+    <link href="../css/calendar.css" rel="stylesheet" />
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
         <div class="container">
             <a href="../index.html" class="logo" aria-label="Página inicial da Nutrichef">Nutrichef</a>
-            
+
             <nav class="main-nav" aria-label="Navegação principal">
-                <button class="hamburger" aria-label="Abrir menu de navegação" aria-expanded="false" aria-controls="nav-menu">
+                <button class="hamburger" aria-label="Abrir menu de navegação" aria-expanded="false"
+                    aria-controls="nav-menu">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -34,10 +39,10 @@
     <main>
         <section class="schedule-section">
             <h2>Agendar Consulta</h2>
-            <p>Escolha o melhor horário para sua consulta com nossos nutricionistas...</p>
+            <p>Escolha o melhor horário para sua consulta com nossos nutricionistas:</p>
+            <div id="calendar" style="max-width: 900px; margin: 0 auto; min-height: 600px;"></div>
         </section>
     </main>
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -46,7 +51,8 @@
                     © 2025 Nutrichef. Todos os direitos reservados.
                 </div>
                 <div class="social-links">
-                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Siga-nos no Instagram">
+                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"
+                        aria-label="Siga-nos no Instagram">
                         <img src="../img/instagram-icon.png" alt="Ícone do Instagram" class="social-icon">
                     </a>
                     <div class="contact-info">
@@ -58,6 +64,125 @@
         </div>
     </footer>
 
-    <script src="../js/script.js"></script>
+    <!-- ><script src="../js/script.js"></script> -->
+    <!-- JS do FullCalendar e integração com API -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales-all.global.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            const modal = document.getElementById('eventModal');
+            const form = document.getElementById('eventForm');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'pt-br',
+                slotMinTime: "08:00:00",
+                slotMaxTime: "20:00:00",
+                selectable: true,
+                editable: false,
+                nowIndicator: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'timeGridWeek,timeGridDay'
+                },
+
+                // Carrega eventos do backend
+                events: async function (info, successCallback, failureCallback) {
+                    try {
+                        const res = await fetch('http://localhost:3000/events');
+                        const data = await res.json();
+                        const events = data.map(evt => ({
+                            id: evt.id,
+                            title: evt.title,
+                            start: evt.start.toDate ? evt.start.toDate() : evt.start,
+                            end: evt.end.toDate ? evt.end.toDate() : evt.end
+                        }));
+                        successCallback(events);
+                    } catch (err) {
+                        failureCallback(err);
+                    }
+                },
+
+                // Ao selecionar um intervalo, abre o modal e pré‐enche datas
+                select: function (info) {
+                    document.getElementById('eventStart').value = info.startStr.slice(0, 16);
+                    document.getElementById('eventEnd').value = info.endStr.slice(0, 16);
+                    document.getElementById('eventUserId').value = '';
+                    document.getElementById('eventTitle').value = '';
+                    document.getElementById('eventDesc').value = '';
+                    modal.style.display = 'flex';
+                }
+            });
+
+            calendar.render();
+
+            // Fecha o modal sem salvar
+            cancelBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Submissão do formulário dentro do modal
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const body = {
+                    start: form.start.value,
+                    end: form.end.value,
+                    userId: form.userId.value,
+                    title: form.title.value,
+                    description: form.description.value
+                };
+
+                try {
+                    const res = await fetch('http://localhost:3000/events', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    if (!res.ok) throw new Error(await res.text());
+                    // Recarrega eventos e fecha modal
+                    calendar.refetchEvents();
+                    modal.style.display = 'none';
+                    alert('Consulta agendada com sucesso!');
+                } catch (err) {
+                    alert('Erro ao agendar: ' + err.message);
+                }
+            });
+        });
+    </script>
+
+
+    <!-- Modal de agendamento -->
+    <div id="eventModal" class="modal-overlay" style="display:none;">
+        <div class="modal">
+            <h3>Agendar Consulta</h3>
+            <form id="eventForm">
+                <label>Data de Início
+                    <input type="datetime-local" id="eventStart" name="start" required>
+                </label>
+                <label>Data de Fim
+                    <input type="datetime-local" id="eventEnd" name="end" required>
+                </label>
+                <label>Paciente ID
+                    <input type="text" id="eventUserId" name="userId" required>
+                </label>
+                <label>Consulta
+                    <input type="text" id="eventTitle" name="title" required>
+                </label>
+                <label>Descrição
+                    <textarea id="eventDesc" name="description" rows="3"></textarea>
+                </label>
+                <div class="modal-actions">
+                    <button type="button" id="cancelBtn">Cancelar</button>
+                    <button type="submit">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </body>
+
 </html>

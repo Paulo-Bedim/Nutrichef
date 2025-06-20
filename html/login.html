@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login / Registo</title>
   <link rel="stylesheet" href="../css/login.css">
 </head>
@@ -64,20 +65,21 @@
 
       if (res.ok) {
         alert("Login feito com sucesso!");
-        localStorage.setItem("token", data.token); // Guarda o token
-        // window.location.href = "/dashboard.html"; // redireciona se quiseres
+        localStorage.setItem("token", data.token);
+        // window.location.href = "./dashboard.html"; // redireciona após login
       } else {
-        alert(data.message || "Erro no login.");
+        alert(data.error || "Erro no login.");
       }
     });
 
+    // Submeter formulário de registo
     document.getElementById("registerForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const nome = this.nome.value;
       const email = this.email.value;
       const password = this.password.value;
-      const role = 3;
+      const role = 3; // cliente
 
       const res = await fetch("http://localhost:3000/auth/register", {
         method: "POST",
@@ -90,12 +92,13 @@
       const data = await res.json();
 
       if (res.ok) {
-        window.localtion.href = "./dashboard.html";
+        alert("Registo concluído com sucesso!");
         toggleForms();
       } else {
-        alert(data.message || "Erro no registo.");
+        alert(data.error || "Erro no registo.");
       }
     });
   </script>
 </body>
+
 </html>
