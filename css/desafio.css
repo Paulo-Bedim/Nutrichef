@@ -1,0 +1,120 @@
+/* ========= Estilo específico para página desafio.html ========= */
+
+/* Header fixo e com sombra */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Compensar espaço do header */
+main.container {
+    padding-top: 100px;
+    /* Ajuste conforme a altura real do header */
+}
+
+/* Título principal da página */
+.page-title {
+    text-align: center;
+    font-size: 2.75rem;
+    font-weight: 700;
+    margin-bottom: 2.5rem;
+    color: #1a3c34;
+}
+
+/* Frase motivacional ou subtítulo */
+.desafio-frase {
+    text-align: center;
+    font-size: 1.25rem;
+    font-style: italic;
+    color: #2e7d32;
+    margin-bottom: 3rem;
+}
+
+/* Layout dos desafios em coluna */
+.vertical-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+/* Card de cada desafio */
+.challenge-card {
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    transition: transform 0.2s ease;
+}
+
+.challenge-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Título do desafio */
+.challenge-card h3 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: #1a3c34;
+    text-align: center;
+}
+
+/* Descrição */
+.challenge-card .desc {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin-top: 1rem;
+    color: #444;
+    text-align: justify;
+}
+
+/* Bloco de feedback */
+.challenge-card .feedback {
+    font-style: italic;
+    color: #3b3b3b;
+    background: #e8f5e9;
+    border-left: 5px solid #27ae60;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    border-radius: 6px;
+}
+
+/* Imagens dos desafios */
+.challenge-image img {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    object-fit: cover;
+    margin: 1rem auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile responsivo */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .desafio-frase {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .challenge-card h3 {
+        font-size: 1.4rem;
+    }
+
+    .challenge-card .desc {
+        font-size: 1rem;
+    }
+
+    .challenge-card .feedback {
+        font-size: 0.95rem;
+    }
+}
